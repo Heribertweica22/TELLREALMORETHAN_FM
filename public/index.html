@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gold Price Tracker</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; padding: 30px; }
+        h1 { color: goldenrod; }
+        .price { font-size: 2em; margin: 20px 0; }
+        .signal { font-size: 1.5em; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <h1>Gold Price (XAU/USD)</h1>
+    <div class="price" id="price">Loading...</div>
+    <div class="signal" id="signal">Please wait...</div>
+
+    <script>
+        async function getPrice() {
+            try {
+                const res = await fetch('/price');
+                const data = await res.json();
+                document.getElementById('price').innerText = `$${data.price}`;
+                document.getElementById('signal').innerText = data.signal;
+            } catch {
+                document.getElementById('price').innerText = 'No Data';
+                document.getElementById('signal').innerText = "DON'T TRADE";
+            }
+        }
+        getPrice();
+        setInterval(getPrice, 30000); // update every 30 seconds
+    </script>
+</body>
+</html>
